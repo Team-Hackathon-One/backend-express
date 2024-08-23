@@ -1,5 +1,5 @@
-import { env } from "../config/env";
-
+import { env } from "../config/env.js";
+import { Story } from "../model/relations/relations.js";
 // Configuración de la API
 const API_KEY = env.plant_api_key;
 const API_URL = "https://plant.id/api/v3";
@@ -25,7 +25,18 @@ export function searchPlant(req, res) {
         }
         return response.json();
       })
-      .then((jsonData) => res.json(jsonData))
+      .then(async (jsonData) => {
+        // Guardar los resultados en la base de datos
+        const stories = jsonData.map((plant) => ({
+          plant_name: plant.common_name,
+          plant_desc: plant.description,
+          plant_image: plant.image_url,
+        }));
+
+        await Story.bulkCreate(stories);
+
+        res.json(jsonData);
+      })
       .catch((error) => {
         console.error("Error al buscar la planta: ", error);
         res.status(500).json({ error: "Error al buscar la planta" });
@@ -74,15 +85,12 @@ export function identifyPlant(req, res) {
 
 export function getPlantDetail(req, res) {
   const { access_token } = req.params;
-  const { language } = req.query;
   const details =
-    "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods";
+    "common_names,url,description,taxonomy,image,synonyms,edible_parts,watering,propagation_methods";
 
   try {
     fetch(
-      `${API_URL}/kb/plants/${access_token}?details=${details}&language=${
-        language || "en"
-      }`,
+      `${API_URL}/kb/plants/${access_token}?details=${details}&language=es`,
       {
         method: "GET",
         headers: {

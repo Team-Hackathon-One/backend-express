@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize";
-import { env } from "./env";
 
-const sequelize = new Sequelize("SmartVision", "root", "", {
+const sequelize = new Sequelize("smartvision", "root", "", {
   host: "localhost",
   dialect: "mysql",
 });
@@ -13,7 +12,7 @@ export async function initDb() {
     console.log("✅ Conexión a la base de datos establecida con éxito.");
 
     console.log("🔄 Sincronizando la base de datos...");
-    await sequelize.sync({ alter: true }); // { alter: true } o { force: true }
+    await sequelize.sync({ force: true }); // { alter: true } o { force: true }
     console.log("✅ Sincronización de la base de datos completada.");
   } catch (error) {
     console.error(`❌ Error al inicializar la base de datos: ${error}`);

@@ -1,12 +1,20 @@
-import Router from 'express';
-import { createUser, deleteUser, getUser, getUsers, updateUser } from '../controllers/usuario.controller.js';
+import Router from "express";
+import {
+  createUser,
+  deleteUser,
+  getUser,
+  getUsers,
+  updateUser,
+} from "../controllers/usuario.controller.js";
 
-const userRoutes = Router();
+const router = Router();
 
-userRoutes.post("/", createUser)
-userRoutes.get("/", getUsers)
-userRoutes.get("/:id", getUser)
-userRoutes.put("/:id", updateUser)
-userRoutes.delete("/:id", deleteUser)
+router.post("/", createUser);
+router.get("/", getUsers);
+router.get("/:id", getUser);
+router.put("/:id", updateUser);
+router.delete("/:id", deleteUser);
 
-export default userRoutes
+const userRouter = router;
+
+export default userRouter;

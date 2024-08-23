@@ -1,4 +1,5 @@
-import Usuario from "../models/usuario.model.js";
+import { Usuario } from "../model/relations/relations.js";
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";

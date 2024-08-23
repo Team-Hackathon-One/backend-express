@@ -1,19 +1,19 @@
-import Usuario from "../usuario.model.js";
+import Story from "../story.model.js";
+import Usuario from "../user.model.js";
 
-//EJEMPLO DE RELACIONES EN SEQUELIZE
 export async function initRelations() {
-  Usuario.hasMany(Institucion, {
+  Usuario.hasMany(Story, {
     foreignKey: "usuario_id",
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
 
-  Institucion.belongsTo(Usuario, {
+  Story.belongsTo(Usuario, {
     foreignKey: "usuario_id",
   });
 
-  await Usuario.sync();
-  await Institucion.sync();
+  // await Usuario.sync({ alter: true });
+  // await Story.sync({ alter: true });
   console.log("🔄 Relaciones de modelos creadas correctamente");
 }
-export { Usuario, Institucion };
+export { Usuario, Story };

@@ -1,5 +1,4 @@
-import Usuario from "../model/user.model.js";
-
+import { Usuario } from "../model/relations/relations.js";
 export const createUser = async (req, res) => {
   const { username, lastname, email, password } = req.body;
   if (!email || !password) {
@@ -10,7 +9,12 @@ export const createUser = async (req, res) => {
     });
   }
   try {
-    const result = await Usuario.create({ username, lastname, email, password });
+    const result = await Usuario.create({
+      username,
+      lastname,
+      email,
+      password,
+    });
     console.log(`Usuario con id: ${result.id} creado.`);
     console.log(result.dataValues);
     return res.status(201).json({

@@ -4,7 +4,7 @@ import sequelize from "../config/db.js";
 // import Institucion from "./institucion.model.js";
 
 const Usuario = sequelize.define(
-  "Usuario",
+  "User",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -44,7 +44,7 @@ const Usuario = sequelize.define(
     },
   },
   {
-    tableName: "usuarios",
+    tableName: "users",
     timestamps: true,
     paranoid: true,
     hooks: {
