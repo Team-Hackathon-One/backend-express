@@ -8,7 +8,8 @@ import authRouter from "./src/router/auth.routes.js";
 import plantRouter from "./src/router/plants.routes.js";
 import userRouter from "./src/router/user.routes.js";
 import { env } from "./src/config/env.js";
-import { createFakeUsers } from "./src/utils/create-users.js";
+import chatRouter from "./src/router/chat.routes.js";
+// import { createFakeUsers } from "./src/utils/create-users.js";
 
 const app = express();
 
@@ -18,10 +19,19 @@ const PORT = env.server_port;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(cors({ origin: "*" }));
 app.use(helmet());
+// Configuración de CORS
+const corsOptions = {
+  origin: "*", // Permitir todas las solicitudes durante la depuración
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
 
+app.use(cors(corsOptions));
 app.use("/api", authRouter);
+app.use("/api", chatRouter);
 app.use("/api", userRouter);
 app.use("/api", plantRouter);
 
