@@ -1,5 +1,6 @@
 import { CohereClient } from "cohere-ai";
 import { env } from "../config/env.js";
+import Story from "../model/story.model.js";
 
 const cohere = new CohereClient({
   token: env.cohere_api_key,
@@ -12,6 +13,7 @@ export async function chatwithrag(req, res) {
   console.log("Cuerpo de la solicitud:", req.body);
 
   const { query } = req.body;
+  // const userId = req.user.id;
 
   if (!query) {
     console.error("Error: La consulta está undefined o vacía");
@@ -96,24 +98,35 @@ export async function chatwithrag(req, res) {
     const plantDetails = await detailsResponse.json();
     console.log("Detalles de la planta:", plantDetails);
 
-    // Paso 4: Usar Cohere para generar una respuesta informativa
+    // Paso 4: Usar Cohere para generar una respuesta informativa y forzar un formato específico
     console.log("Generando respuesta informativa con Cohere...");
     const cohereContext = JSON.stringify(plantDetails);
     const cohereResponse = await cohere.chat({
       model: "command-r-plus",
-      preamble: `Eres un asistente botánico virtual, y tu tarea es proporcionar una descripción clara, atractiva e informativa sobre la planta ${plantName}. Sigue estas pautas para crear una respuesta completa:
+      preamble: `Eres un asistente botánico virtual, y tu tarea es proporcionar una descripción clara, atractiva e informativa sobre la planta ${plantName}. Sigue estrictamente estas pautas para crear una respuesta completa y consistente:
 
-0- Prioriza calidad antes que cantidad de texto, no superar las 100 palabras.
-1. Comienza con el nombre científico de la planta, su familia botánica y su origen geográfico.
-2. Ofrece una breve descripción física de la planta, incluyendo sus características visuales distintivas.
-3. Describe los usos comunes de la planta, tanto en aplicaciones cotidianas como en tradiciones culturales o históricas.
-4. Menciona cualquier dato interesante o curioso relacionado con su cultivo, beneficios para la salud, o anécdotas relevantes.
-5. Indica si la planta tiene partes comestibles, y sugiere recetas creativas y deliciosas para desayunos, almuerzos o cenas Presentaras esta parte con un titulo y distintos items donde explayaras cada ingrediente de las recetas.
-6. Advierte sobre cualquier parte venenosa o tóxica, proporcionando instrucciones claras de seguridad.
+- Prioriza la calidad y la concisión en tu respuesta.
+- No superes las 100 palabras en total.
+- Comienza con el nombre científico de la planta, seguido de su familia botánica y origen geográfico.
+- Incluye una breve descripción física de la planta, destacando sus características visuales distintivas.
+- Describe los usos comunes de la planta, tanto en aplicaciones cotidianas como en tradiciones culturales.
+- Menciona cualquier dato interesante o curioso relacionado con su cultivo, beneficios para la salud, o anécdotas relevantes.
+- Si la planta tiene partes comestibles, sugiere recetas creativas para desayunos, almuerzos o cenas. Utiliza el siguiente formato para las recetas:
+  \`\`\`
+  **Recetas deliciosas y creativas con [Nombre de la planta]:**
 
-Recuerda mantener un equilibrio entre la información concisa y atractiva. Tu objetivo es educar e inspirar a los usuarios con la versatilidad y las curiosidades de esta planta, siempre priorizando su seguridad."
+  **Desayuno:**
+  - [Receta 1]
+  - [Receta 2]
 
-La respuesta debe estar escrita en lenguaje natural, ser informativa pero no extensa, y mantener un tono descriptivo y atractivo. Prioriza la seguridad al mencionar partes tóxicas y demuestra creatividad al proponer recetas culinarias.`,
+  **Almuerzo/Cena:**
+  - [Receta 3]
+  - [Receta 4]
+  \`\`\`
+
+- Advierte sobre cualquier parte venenosa o tóxica y proporciona instrucciones claras de seguridad.
+
+Recuerda mantener un tono descriptivo y atractivo, y siempre prioriza la seguridad del usuario.`,
       message: `Usa la siguiente información sobre ${plantName} para generar una respuesta informativa y atractiva.`,
       temperature: 0.6,
       context: cohereContext,
@@ -121,9 +134,28 @@ La respuesta debe estar escrita en lenguaje natural, ser informativa pero no ext
 
     console.log("Respuesta generada por Cohere");
 
+    // Extraer recetas de la respuesta de Cohere
+    // const recipesRegex =
+    //   /\*\*Recetas deliciosas y creativas con .*?:(.*?)\*\*Precaución:/s;
+    // const recipesMatch = cohereResponse.text.match(recipesRegex);
+    // const recipes = recipesMatch ? recipesMatch[1] : null;
+
+    // const newStory = new Story({
+    //   // user_id: userId,
+    //   search_query: query,
+    //   plant_name: plantName,
+    //   plant_description: plantDescription,
+    //   plant_image: plantImage,
+    //   plant_uses: plantUses,
+    //   recipes: recipes,
+    //   poisonous_parts: poisonousParts,
+    //   safety_instructions: safetyInstructions,
+    // });
+    // await newStory.save();
     res.status(200).json({
       plantName: plantName,
       informativeResponse: cohereResponse.text,
+      // recipes: recipes,
     });
   } catch (error) {
     console.error("Error en el proceso:", error);
