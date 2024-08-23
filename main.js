@@ -8,7 +8,8 @@ import authRouter from "./src/router/auth.routes.js";
 import plantRouter from "./src/router/plants.routes.js";
 import userRouter from "./src/router/user.routes.js";
 import { env } from "./src/config/env.js";
-import { createFakeUsers } from "./src/utils/create-users.js";
+import chatRouter from "./src/router/chat.routes.js";
+// import { createFakeUsers } from "./src/utils/create-users.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cors({ origin: "*" }));
 app.use(helmet());
 
 app.use("/api", authRouter);
+app.use("/api", chatRouter);
 app.use("/api", userRouter);
 app.use("/api", plantRouter);
 
