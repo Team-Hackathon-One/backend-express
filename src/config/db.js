@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("test", "root", "", {
+const sequelize = new Sequelize("SmartVision", "root", "", {
   host: "localhost",
   dialect: "mysql",
 });

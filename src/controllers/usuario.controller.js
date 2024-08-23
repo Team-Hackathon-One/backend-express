@@ -1,7 +1,7 @@
-import Usuario from "../models/usuario.model.js";
+import Usuario from "../model/user.model.js";
 
-export const createUsuario = async (req, res) => {
-  const { nombre, apellido, email, password } = req.body;
+export const createUser = async (req, res) => {
+  const { username, lastname, email, password } = req.body;
   if (!email || !password) {
     console.log("Datos de entrada inválidos para la creación del usuario.");
     return res.status(400).json({
@@ -10,7 +10,7 @@ export const createUsuario = async (req, res) => {
     });
   }
   try {
-    const result = await Usuario.create({ nombre, apellido, email, password });
+    const result = await Usuario.create({ username, lastname, email, password });
     console.log(`Usuario con id: ${result.id} creado.`);
     console.log(result.dataValues);
     return res.status(201).json({
@@ -28,7 +28,7 @@ export const createUsuario = async (req, res) => {
   }
 };
 
-export const getUsuarios = async (req, res) => {
+export const getUsers = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll();
     console.log("Usuarios obtenidos: ", usuarios.length);
@@ -47,7 +47,7 @@ export const getUsuarios = async (req, res) => {
   }
 };
 
-export const getUsuario = async (req, res) => {
+export const getUser = async (req, res) => {
   const { id } = req.params;
   if (!id) {
     console.log("ID de usuario no proporcionado.");
@@ -84,9 +84,9 @@ export const getUsuario = async (req, res) => {
   }
 };
 
-export const updateUsuario = async (req, res) => {
+export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { nombre, apellido, email, password } = req.body;
+  const { username, lastname, email, password } = req.body;
   if (!email || !password) {
     console.log(
       "Datos de entrada inválidos para la actualización del usuario."
@@ -108,8 +108,8 @@ export const updateUsuario = async (req, res) => {
       });
     }
 
-    usuario.nombre = nombre;
-    usuario.apellido = apellido;
+    usuario.username = username;
+    usuario.lastname = lastname;
     usuario.email = email;
     usuario.password = password;
     await usuario.save();
@@ -130,7 +130,7 @@ export const updateUsuario = async (req, res) => {
   }
 };
 
-export const deleteUsuario = async (req, res) => {
+export const deleteUser = async (req, res) => {
   const { id } = req.params;
   if (!id) {
     console.log("ID de usuario no proporcionado.");
