@@ -1,8 +1,9 @@
 import Usuario from "../models/usuario.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env.js";
 
-const SECRET_KEY = "secret";
+const SECRET_KEY = env.jwt_secret;
 const EXPIRES_IN = "24h";
 
 export async function signUp(req, res) {

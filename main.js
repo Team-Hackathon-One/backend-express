@@ -22,6 +22,8 @@ app.use(cors({ origin: "*" }));
 app.use(helmet());
 
 app.use("/", authRouter);
+// app.use("/api/chat",chatRouter)
+// app.use("/api/plants", plantsRouter)
 
 app.use("/", (req, res) => {
   console.log("📥 Solicitud recibida en la ruta raíz");

@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
+import { env } from "./env";
 
-const sequelize = new Sequelize("test", "root", "", {
+const sequelize = new Sequelize(env.db_name, env.db_user, env.db_password, {
   host: "localhost",
   dialect: "mysql",
 });
