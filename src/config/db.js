@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { env } from "./env";
 
 const sequelize = new Sequelize("SmartVision", "root", "", {
   host: "localhost",

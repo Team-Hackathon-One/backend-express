@@ -18,13 +18,13 @@ export async function authenticateJWT(request, response, nextFunction) {
   const token = extractTokenFromHeader(request);
 
   if (!token) {
-    return response.sendStatus(401); // Unauthorized
+    return response.status(401); // Unauthorized
   }
 
   try {
     request.user = await verifyJWT(token);
     nextFunction();
   } catch (error) {
-    return response.sendStatus(403); // Forbidden
+    return response.status(403); // Forbidden
   }
 }
