@@ -4,8 +4,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 //#RUTAS
-import authRouter from "./src/routes/auth.routes.js";
-
+// import authRouter from "./src/routes/auth.routes.js";
+import userRoutes from "./src/router/user.routes.js";
 //#CONFIG
 import { initDb } from "./src/config/db.js";
 // import { initRelations } from "./src/models/relations/relations.js";
@@ -21,19 +21,7 @@ app.use(morgan("dev"));
 app.use(cors({ origin: "*" }));
 app.use(helmet());
 
-app.use("/", authRouter);
-// app.use("/api/chat",chatRouter)
-// app.use("/api/plants", plantsRouter)
-
-app.use("/", (req, res) => {
-  console.log("📥 Solicitud recibida en la ruta raíz");
-  res.send("Hola Mundo!");
-});
-
-app.use((req, res) => {
-  console.log("⚠️ Ruta no encontrada");
-  res.status(404).send("404 - No encontrado");
-});
+app.use("/", userRoutes);
 
 app.listen(PORT, async () => {
   console.log("🔄 Iniciando servidor...");

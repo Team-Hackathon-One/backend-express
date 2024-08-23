@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { env } from "./env";
 
-const sequelize = new Sequelize(env.db_name, env.db_user, env.db_password, {
+const sequelize = new Sequelize("SmartVision", "root", "", {
   host: "localhost",
   dialect: "mysql",
 });

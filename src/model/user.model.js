@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import Institucion from "./institucion.model.js";
+// import Institucion from "./institucion.model.js";
 
 const Usuario = sequelize.define(
   "Usuario",
@@ -11,14 +11,14 @@ const Usuario = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    nombre: {
+    username: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
         notEmpty: false,
       },
     },
-    apellido: {
+    lastname: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
