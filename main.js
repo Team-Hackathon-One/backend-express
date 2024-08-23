@@ -8,6 +8,7 @@ import authRouter from "./src/router/auth.routes.js";
 import plantRouter from "./src/router/plants.routes.js";
 import userRouter from "./src/router/user.routes.js";
 import { env } from "./src/config/env.js";
+import { createFakeUsers } from "./src/utils/create-users.js";
 
 const app = express();
 
@@ -28,5 +29,6 @@ app.listen(PORT, async () => {
   console.log("🔄 Iniciando servidor...");
   await initDb();
   await initRelations();
+  // await createFakeUsers();
   console.log(`✅ Servidor ejecutándose en: ${URL}:${PORT}`);
 });

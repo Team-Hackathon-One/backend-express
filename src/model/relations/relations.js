@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+import bcrypt from "bcrypt";
 import Story from "../story.model.js";
 import Usuario from "../user.model.js";
 
@@ -16,4 +18,5 @@ export async function initRelations() {
   // await Story.sync({ alter: true });
   console.log("🔄 Relaciones de modelos creadas correctamente");
 }
+
 export { Usuario, Story };
