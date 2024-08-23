@@ -19,9 +19,17 @@ const PORT = env.server_port;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(cors({ origin: "*" }));
 app.use(helmet());
+// Configuración de CORS
+const corsOptions = {
+  origin: "*", // Permitir todas las solicitudes durante la depuración
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
 
+app.use(cors(corsOptions));
 app.use("/api", authRouter);
 app.use("/api", chatRouter);
 app.use("/api", userRouter);
